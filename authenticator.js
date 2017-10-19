@@ -9,6 +9,7 @@ let authenticate = exports.authenticate = (() => {
   var _ref = _asyncToGenerator(function* (client_id, client_secret, opener, scope, issuer = 'https://accounts.pdk.io') {
     const pdkIssuer = yield _openidClient.Issuer.discover(issuer);
     const client = new pdkIssuer.Client({ client_id, client_secret });
+    client.CLOCK_TOLERANCE = 30; // allow a 30 second skew
     if (!opener) {
       opener = _opener2.default;
     }
@@ -79,7 +80,9 @@ let authenticate = exports.authenticate = (() => {
 let getOidClient = exports.getOidClient = (() => {
   var _ref2 = _asyncToGenerator(function* (client_id, client_secret, issuer = 'https://accounts.pdk.io') {
     const pdkIssuer = yield _openidClient.Issuer.discover(issuer);
-    return new pdkIssuer.Client({ client_id, client_secret });
+    const client = new pdkIssuer.Client({ client_id, client_secret });
+    client.CLOCK_TOLERANCE = 30; // allow a 30 second skew
+    return client;
   });
 
   return function getOidClient(_x5, _x6) {
@@ -101,6 +104,7 @@ let refreshTokenSet = exports.refreshTokenSet = (() => {
   var _ref3 = _asyncToGenerator(function* (client_id, client_secret, refresh_token, issuer = 'https://accounts.pdk.io') {
     const pdkIssuer = yield _openidClient.Issuer.discover(issuer);
     const client = new pdkIssuer.Client({ client_id, client_secret });
+    client.CLOCK_TOLERANCE = 30; // allow a 30 second skew
 
     return client.refresh(refresh_token);
   });

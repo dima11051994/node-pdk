@@ -8,6 +8,7 @@ Issuer.defaultHttpOptions = {form: true};
 export async function authenticate(client_id, client_secret, opener, scope, issuer = 'https://accounts.pdk.io') {
   const pdkIssuer = await Issuer.discover(issuer);
   const client = new pdkIssuer.Client({ client_id, client_secret });
+  client.CLOCK_TOLERANCE = 30;// allow a 30 second skew
   if (!opener) {
     opener = defaultOpener;
   }
@@ -73,7 +74,9 @@ export async function authenticate(client_id, client_secret, opener, scope, issu
 
 export async function getOidClient(client_id, client_secret, issuer = 'https://accounts.pdk.io') {
   const pdkIssuer = await Issuer.discover(issuer);
-  return new pdkIssuer.Client({ client_id, client_secret });
+  const client = new pdkIssuer.Client({ client_id, client_secret });
+  client.CLOCK_TOLERANCE = 30; // allow a 30 second skew
+  return client;
 }
 
 /**
@@ -87,6 +90,7 @@ export async function getOidClient(client_id, client_secret, issuer = 'https://a
 export async function refreshTokenSet(client_id, client_secret, refresh_token, issuer = 'https://accounts.pdk.io') {
   const pdkIssuer = await Issuer.discover(issuer);
   const client = new pdkIssuer.Client({client_id, client_secret});
+  client.CLOCK_TOLERANCE = 30; // allow a 30 second skew
 
   return client.refresh(refresh_token);
 }
