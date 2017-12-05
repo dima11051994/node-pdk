@@ -3,7 +3,7 @@ import { createServer } from 'http';
 import defaultOpener from 'opener';
 
 //FIXME: Remove this default http options setter after 'got' library will release new version
-Issuer.defaultHttpOptions = {form: true};
+Issuer.defaultHttpOptions = {form: true, timeout: 30000};
 
 export async function authenticate(client_id, client_secret, opener, scope, issuer = 'https://accounts.pdk.io') {
   const pdkIssuer = await Issuer.discover(issuer);
